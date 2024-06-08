@@ -1,0 +1,3 @@
+# gotuils
+
+Common golang stuff.
