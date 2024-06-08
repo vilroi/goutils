@@ -6,6 +6,11 @@ import (
 	"github.com/vilroi/goutils"
 )
 
+const (
+	passwdPath string = "/etc/passwd"
+	groupPath  string = "/etc/group"
+)
+
 type Passwd struct {
 	Name    string
 	Passwd  string
@@ -48,7 +53,7 @@ func GidToName(gid uint32) string {
 func Getpwents() []Passwd {
 	var entries []Passwd
 
-	scanner := goutils.MakeFileScanner("/etc/passwd")
+	scanner := goutils.MakeFileScanner(passwdPath)
 	for scanner.Scan() {
 		ent := parsepwent(scanner.Text())
 		entries = append(entries, ent)
@@ -75,7 +80,7 @@ func parsepwent(s string) Passwd {
 func Getgrents() []Group {
 	var entries []Group
 
-	scanner := goutils.MakeFileScanner("/etc/group")
+	scanner := goutils.MakeFileScanner(groupPath)
 	for scanner.Scan() {
 		group := parsegrent(scanner.Text())
 		entries = append(entries, group)
