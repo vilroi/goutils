@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
+
+	"github.com/vilroi/goutils"
 )
 
 func TestGetPwents(t *testing.T) {
@@ -22,10 +24,33 @@ func TestGetrents(t *testing.T) {
 
 func Test(t *testing.T) {
 	uid := os.Getuid()
-	username := UidToUsername(uint32(uid))
+	username, err := UidToUsername(uint32(uid))
+	check(err)
+
 	fmt.Printf("%s: %d\n", username, uid)
 
 	gid := os.Getgid()
-	grpname := GidToName(uint32(gid))
+	grpname, err := GidToName(uint32(gid))
+	check(err)
+
 	fmt.Printf("%s: %d\n", grpname, uid)
+}
+
+func TestErrors(t *testing.T) {
+	_, err := UidToUsername(9999999)
+	if err == nil {
+		goutils.Err("UidToUsername should result in an error")
+	}
+
+	_, err = GidToName(9999999)
+	if err == nil {
+		goutils.Err("GidToName should result in an error")
+	}
+
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }

@@ -1,6 +1,7 @@
 package linux
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/vilroi/goutils"
@@ -9,6 +10,11 @@ import (
 const (
 	passwdPath string = "/etc/passwd"
 	groupPath  string = "/etc/group"
+)
+
+var (
+	ErrUidNotFound = errors.New("uid not found in /etc/passwd")
+	ErrGidNotFound = errors.New("gid not found in /etc/group")
 )
 
 type Passwd struct {
@@ -28,26 +34,26 @@ type Group struct {
 	Members []string
 }
 
-func UidToUsername(uid uint32) string {
+func UidToUsername(uid uint32) (string, error) {
 	users := Getpwents()
 
 	for _, user := range users {
 		if user.Uid == uid {
-			return user.Name
+			return user.Name, nil
 		}
 	}
-	return ""
+	return "", ErrUidNotFound
 }
 
-func GidToName(gid uint32) string {
+func GidToName(gid uint32) (string, error) {
 	groups := Getgrents()
 
 	for _, grp := range groups {
 		if grp.Gid == gid {
-			return grp.Name
+			return grp.Name, nil
 		}
 	}
-	return ""
+	return "", ErrGidNotFound
 }
 
 func Getpwents() []Passwd {
