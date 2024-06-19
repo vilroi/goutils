@@ -1,3 +1,3 @@
-# gotuils
+# goutils
 
 Common golang stuff.
