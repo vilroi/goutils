@@ -8,3 +8,9 @@ func TestAssertEq(t *testing.T) {
 	//AssertEq(10, "10")
 	//AssertEq("re", "10")
 }
+
+func TestAssertNotEq(t *testing.T) {
+	//AssertNotEq(10, "10")
+	//AssertNotEq("yo", "yo")
+	AssertNotEq("re", "10")
+}
